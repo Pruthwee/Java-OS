@@ -1,5 +1,5 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: tododb
   labels:
@@ -8,20 +8,13 @@ metadata:
     app.kubernetes.io/instance: postgresql-ephemeral
 spec:
   replicas: 1
-  revisionHistoryLimit: 10
   selector:
-    name: tododb
-  strategy:
-    activeDeadlineSeconds: 21600
-    recreateParams:
-      timeoutSeconds: 600
-    resources: {}
-    type: Recreate
+    matchLabels:
+      name: tododb
   template:
     metadata:
       annotations:
         openshift.io/generated-by: OpenShiftNewApp
-      creationTimestamp: null
       labels:
         name: tododb
     spec:
@@ -42,7 +35,7 @@ spec:
             secretKeyRef:
               key: database-name
               name: tododb
-        image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:276f2ee5b269cf2ba996900448a6112caf2e0a1517d0de424c1679d65009a0c6
+        image: ${POSTGRESQL_IMAGE}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -86,15 +79,3 @@ spec:
       volumes:
       - emptyDir: {}
         name: tododb-data
-  test: false
-  triggers:
-  - imageChangeParams:
-      automatic: true
-      containerNames:
-      - postgresql
-      from:
-        kind: ImageStreamTag
-        name: postgresql:10-el8
-        namespace: openshift
-    type: ImageChange
-  - type: ConfigChange

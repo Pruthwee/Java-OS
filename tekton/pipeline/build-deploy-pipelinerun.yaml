@@ -11,13 +11,6 @@ spec:
     value: openshift-java-demo
   - name: git-url
     value: https://github.com/sholly/openshift-java-demo.git
-  - name: git-revision
-    value: main
-  - name: image
-    value: image-registry.openshift-image-registry.svc:5000/java-demo-tekton/openshift-java-demo
-  pipelineRef:
-    name: clone-build-deploy
-  serviceAccountName: pipeline
   timeout: 1h0m0s
   workspaces:
   - name: shared-workspace

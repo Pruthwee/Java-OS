@@ -1,22 +1,20 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: java-demo
+  name: openshift-java-demo-ingress
+  namespace: openshift-java-demo
   annotations:
+    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-  labels:
-    app: java-demo
-    app.kubernetes.io/component: java-demo
-    app.kubernetes.io/instance: java-demo
 spec:
   rules:
-    - http:
+    - host: openshift-java-demo.example.com
+      http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: java-demo
+                name: openshift-java-demo-service
                 port:
-                  number: 8080
+                  number: 80
