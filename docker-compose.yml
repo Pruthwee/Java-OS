@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  openshift-java-demo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${DB_HOST:-tododb}:5432/todo
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-todo}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-demo123}
+    volumes:
+      - ./config:/app/config
+    restart: always

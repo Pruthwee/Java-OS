@@ -22,7 +22,7 @@ spec:
   - name: image
     type: string
     description: image to be built from the code
-    default: 'image-registry.openshift-image-registry.svc:5000/java-demo-tekton/java-demo'
+    default: '${ECR_REGISTRY}/java-demo-tekton/java-demo'
   tasks:
   - name: fetch-repository
     taskRef:
@@ -87,4 +87,3 @@ spec:
     workspaces:
       - name: manifest-dir
         workspace: shared-workspace
-
