@@ -14,7 +14,7 @@ spec:
   - name: git-revision
     value: main
   - name: image
-    value: image-registry.openshift-image-registry.svc:5000/java-demo-tekton/openshift-java-demo
+    value: ${ECR_REGISTRY}/java-demo-tekton/openshift-java-demo
   pipelineRef:
     name: clone-build-deploy
   serviceAccountName: pipeline
