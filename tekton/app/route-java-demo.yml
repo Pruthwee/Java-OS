@@ -1,18 +1,23 @@
-apiVersion: route.openshift.io/v1
-kind: Route
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
+  name: java-demo
   annotations:
-    openshift.io/host.generated: "true"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
   labels:
     app: java-demo
     app.kubernetes.io/component: java-demo
     app.kubernetes.io/instance: java-demo
-  name: java-demo
 spec:
-  port:
-    targetPort: 8080-tcp
-  to:
-    kind: Service
-    name: java-demo
-    weight: 100
-  wildcardPolicy: None
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: java-demo
+                port:
+                  number: 8080
